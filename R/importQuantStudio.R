@@ -8,7 +8,7 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' importQuantStudio(INPUT_PLATELAYOUT = INPUT_PLATELAYOUT, INPUT_QUANTSTUDIO = INPUT_QUANTSTUDIO)
+#' \dontrun{importQuantStudio(INPUT_PLATELAYOUT = INPUT_PLATELAYOUT, INPUT_QUANTSTUDIO = INPUT_QUANTSTUDIO)}
 
 importQuantStudio <- function(INPUT_PLATELAYOUT, INPUT_QUANTSTUDIO) {
 
