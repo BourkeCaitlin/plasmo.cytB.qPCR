@@ -1,0 +1,104 @@
+---
+title: "Plasmodium Screening: Run Summary"
+header-includes:
+   - \usepackage[default]{sourcesanspro}
+   - \usepackage[T1]{fontenc}
+mainfont: SourceSansPro
+classoption: landscape
+params:
+  project: projet
+  assay: assay
+  plate_folder: plate_folder
+---
+
+```{r setup, include=FALSE}
+library(here)
+knitr::opts_chunk$set(echo = FALSE, fig.width=12, fig.height=7, warning = F)
+
+
+data <- classifyScreening(project = params$project,
+                          assay = params$assay, 
+                          plate_folder = params$plate_folder)
+```
+
+\newpage
+
+```{r plate map}
+data[[4]]
+```
+
+```{r melt temperatures 1}
+data[[1]]
+```
+
+```{r melt temperatures 2}
+data[[2]]
+```
+
+```{r amplification curve}
+data[[3]]
+```
+
+\newpage
+
+```{r write results, include = F}
+file_name <- paste0(params$project, "-", params$plate_folder, "_screening_results.xlsx")
+
+to_save <- data[[5]][[1]] %>% 
+  dplyr::select(sample_id, well_position, plate_name, ct, tm1, tm2, derivative_max, classification_bind) %>% 
+  # dplyr::select(-c(class_ct, class_sample2, classification)) %>% 
+  dplyr::rename(classification = classification_bind)
+	
+
+colnames(to_save) <- paste0(colnames(to_save),  "_screening")
+  
+to_save <- to_save %>%  janitor::clean_names() %>% 
+  dplyr::rename(sample_id = starts_with("sample_id")) %>% 
+  dplyr::mutate(tm2_screening = as.numeric(tm2_screening))
+
+style_rounded = openxlsx::createStyle(numFmt="0,00")
+
+results <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(results, "screening", gridLines = T)
+openxlsx::writeData(results, "screening", to_save)
+
+format_spp_pos <- openxlsx::createStyle(bgFill = "#BC2728")
+format_spp_neg <- openxlsx::createStyle(bgFill = "#BCD7FB")
+style_rounded = openxlsx::createStyle(numFmt="0.00")
+
+
+openxlsx::conditionalFormatting(results, "screening", 1:ncol(to_save), rule = "positive", style = format_spp_pos, type = "contains", rows = 1:nrow(to_save)+1)
+
+
+openxlsx::conditionalFormatting(results, "screening", 1:ncol(to_save), rule = "negative", style = format_spp_neg, type = "contains", rows = 1:nrow(to_save)+1)
+
+openxlsx::addStyle(results, "screening", style_rounded, rows = 1:nrow(to_save)+1, cols = 4)
+openxlsx::addStyle(results, "screening", style_rounded, rows = 1:nrow(to_save)+1, cols = 5)
+openxlsx::addStyle(results, "screening", style_rounded, rows = 1:nrow(to_save)+1, cols = 6)
+openxlsx::addStyle(results, "screening", style_rounded, rows = 1:nrow(to_save)+1, cols = 7)
+
+
+openxlsx::writeDataTable(results, "screening", to_save, startRow = 1, startCol = 1, tableStyle = "TableStyleLight9")
+
+
+width_vec <- apply(to_save, 2, function(x) max(nchar(as.character(x)) + 2, na.rm = TRUE))
+dth_vec_header <- nchar(colnames(to_save))  + 2
+
+width_vec <- dplyr::bind_cols(text = width_vec, header = dth_vec_header) %>% 
+  dplyr::mutate(col_no = paste0("col", 1:length((to_save)))) %>%
+  tidyr::pivot_longer(-col_no) %>% 
+  dplyr::mutate(value = case_when(
+    value==Inf ~0, 
+     TRUE~value))  %>% 
+  dplyr::group_by(col_no) %>%  
+  dplyr::filter(value == max(value)) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(col_no, value) %>% 
+  dplyr::distinct()
+#          
+openxlsx::setColWidths(results, "screening", cols = 1:ncol(to_save), widths = width_vec$value)
+
+
+openxlsx::saveWorkbook(results,file = here::here("results/", project, "/", assay, "/spreadsheet/",file_name), overwrite = T )
+```
+
