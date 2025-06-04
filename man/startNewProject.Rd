@@ -4,10 +4,10 @@
 \alias{startNewProject}
 \title{Generate folder structure to save results}
 \usage{
-startNewProject(project_name, species_type)
+startNewProject(project, species_type)
 }
 \arguments{
-\item{project_name}{project name to use in folder structure}
+\item{project}{project name to use in folder structure}
 
 \item{species_type}{either 'nested' or 'direct' depending on the type of species protocol to be use for the project}
 }
@@ -18,6 +18,6 @@ folder structure at current working directory
 Generate folder structure to save results
 }
 \examples{
-\dontrun{startNewProject("STATEM", "nested")}
+\dontrun{startNewProject("statem", "nested")}
 
 }
