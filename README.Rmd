@@ -29,16 +29,53 @@ You can install the development version of plasmo.cytB.qPCR from [GitHub](https:
 devtools::install_github("BourkeCaitlin/plasmo.cytB.qPCR")
 ```
 
-## Example
+## Begin
 
-This is a basic example which shows you how to solve a common problem:
+First load the library
 
-```{r example}
+``` r
 library(plasmo.cytB.qPCR)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
+### Start new project
+
+Next you will want to setup a new directory (or work within an existing directory) to store all your data and then subsequent results. To do this, the `startNewProject()` function will create the necessary folders, and force creation of a `project`folder. 
+
+For this function, you will need to specify a project name (i.e. studyID) and specify whether your species detection is either `"nested"` or `"direct"`.
+
+
+``` r 
+startNewProject(project = "project", species_type = "nested")
+```
+
+This will create (where you are working) (within an R project !) the necessary folders for you to store your 'data' and then where 'results' will be saved with the following commands
+
+## Create Screening Report
+
+Having saved your files within the 'data' and corresponding *project* folder, you can then use the function `screeningReport()` to generate either a pdf or html report, and corresponding spreadsheet with the results.
+
+In this function you will specify
+
+**project** this is the name you specified in the `startNewProject()` (or is what is in your data folder as the folder project name)
+**assay** for screening, specify **screening**
+**plate_folder** this is the name of the folder where you have saved your results (that contain one quantstudio file and one plate map file (containing 'map' in the filename))
+**file_type** either ".html" or ".pdf" (".pdf") is default if nothing is specified
+
+```r
+screeningReport(project = "project", assay = "screening", plate_folder = "plate1", file_type = ".pdf")
+```
+
+Running this line of code will generate a report and excel spreadsheet saved within `results/project/screening/...`
+
+If for some reason you may want to look at these results within R (not just rendered in a report), you can use the function `classifyScreening()`.
+
+This requires exactly the same input, except for the file_type. This function will instead return a list object containing the four plots that are rendered in the report, and then all QuantStudio data including the results, meltcurve data and then amplification curve data (in this order) within a nested list.
+
+```r
+classifyScreening(project = "project", assay = "screening", plate_folder = "plate1")
+```
+
 
 
 
