@@ -4,9 +4,11 @@
 \alias{classifyScreening}
 \title{Classify screening results}
 \usage{
-classifyScreening(project, assay = "screening", plate_folder)
+classifyScreening(sub_directory, project, assay = "screening", plate_folder)
 }
 \arguments{
+\item{sub_directory}{name of folder to store data/results when working within folder}
+
 \item{project}{the name given during project setup (that is the same as within results or data)}
 
 \item{assay}{is this screening, nested_species or direct_species}

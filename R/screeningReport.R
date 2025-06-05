@@ -2,14 +2,16 @@
 #'
 #' @param project same as the project name you gave in setup
 #' @param assay if generating screening results, this shoudl be "screening"
-#' @param plaste_folder the name of the folder where your files are stored
 #' @param file_type ".pdf" or ".html" depending on the output file you want
+#' @param sub_directory specify the name of the sub_directory you save your data in, if working within a subfolder
+#' @param plate_folder the name of the folder where your two key data files are stored
 #'
 #' @return pdf or html file of results
 #' @export screeningReport
 #'
-#' @examples \dontrun{screeningReport("example", "screening", "plate1", ".pdf")}
-screeningReport <- function(project, assay, plate_folder, file_type = ".pdf") {
+#' @examples \dontrun{screeningReport(sub_directory = "lab-molecular", project = "example",
+#' assay = "screening", plate_folder = "plate1", file_type = ".pdf")}
+screeningReport <- function(sub_directory, project, assay, plate_folder, file_type = ".pdf") {
 
 
   rmarkdown::render(input = system.file("extdata/screening_report.Rmd",
@@ -17,7 +19,7 @@ screeningReport <- function(project, assay, plate_folder, file_type = ".pdf") {
                     output_file = paste0(Sys.Date(),
                                          "_screening_classification_",
                                          project, "-", plate_folder, file_type),
-                    output_dir = paste0(here::here(), "/results/", project, "/", assay, "/report/"),
+                    output_dir = paste0(here::here(),"/", sub_directory, "/results/", project, "/", assay, "/report/"),
                     params = list("project" = paste0(project),
                                   "assay" = paste0(assay),
                                   "plate_folder" = paste0(plate_folder)))

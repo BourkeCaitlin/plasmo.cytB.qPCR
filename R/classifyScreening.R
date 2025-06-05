@@ -3,18 +3,19 @@
 #' @param project the name given during project setup (that is the same as within results or data)
 #' @param assay is this screening, nested_species or direct_species
 #' @param plate_folder what is the name of the folder where the results are saved
+#' @param sub_directory name of folder to store data/results when working within folder
 #'
 #' @return a list of results to be accessed to find plots, data etc
 #' @export classifyScreening
 #'
 #' @examples
-#'\dontrun{classifyScreening("example", "screening", "plate1)}
+#'\dontrun{classifyScreening("sub_directory", "example", "screening", "plate1)}
 
-classifyScreening <- function(project, assay = "screening", plate_folder) {
+classifyScreening <- function(sub_directory, project, assay = "screening", plate_folder) {
   temperature_range_screening <- c(76.5, 80.5)
 
-  QuantStudioData <- importQuantStudio(INPUT_PLATELAYOUT = specifyFolder(project, assay, plate_folder)[1],
-                                       INPUT_QUANTSTUDIO = specifyFolder(project, assay, plate_folder)[2])
+  QuantStudioData <- importQuantStudio(INPUT_PLATELAYOUT = specifyFolder(sub_directory, project, assay, plate_folder)[1],
+                                       INPUT_QUANTSTUDIO = specifyFolder(sub_directory, project, assay, plate_folder)[2])
 
   max_melt <- QuantStudioData[[2]] %>%
       dplyr::filter((temperature>temperature_range_screening[1]   & temperature< temperature_range_screening[2])) %>%

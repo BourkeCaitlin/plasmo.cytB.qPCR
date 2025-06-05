@@ -4,9 +4,11 @@
 \alias{specifyFolder}
 \title{Specify file location}
 \usage{
-specifyFolder(project, assay, plate_folder)
+specifyFolder(sub_directory, project, assay, plate_folder)
 }
 \arguments{
+\item{sub_directory}{are you working within a subdirectory at the root, if so, give it's name here, otherwise leave blank}
+
 \item{project}{the name given during project setup (that is the same as within results or data)}
 
 \item{assay}{is this screening, nested_species or direct_species}

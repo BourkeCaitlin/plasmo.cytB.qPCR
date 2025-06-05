@@ -4,16 +4,24 @@
 \alias{screeningReport}
 \title{Generate a report of the screening experiment}
 \usage{
-screeningReport(project, assay, plate_folder, file_type = ".pdf")
+screeningReport(
+  sub_directory,
+  project,
+  assay,
+  plate_folder,
+  file_type = ".pdf"
+)
 }
 \arguments{
+\item{sub_directory}{specify the name of the sub_directory you save your data in, if working within a subfolder}
+
 \item{project}{same as the project name you gave in setup}
 
 \item{assay}{if generating screening results, this shoudl be "screening"}
 
-\item{file_type}{".pdf" or ".html" depending on the output file you want}
+\item{plate_folder}{the name of the folder where your two key data files are stored}
 
-\item{plaste_folder}{the name of the folder where your files are stored}
+\item{file_type}{".pdf" or ".html" depending on the output file you want}
 }
 \value{
 pdf or html file of results
@@ -22,5 +30,6 @@ pdf or html file of results
 Generate a report of the screening experiment
 }
 \examples{
-\dontrun{screeningReport("example", "screening", "plate1", ".pdf")}
+\dontrun{screeningReport(sub_directory = "lab-molecular", project = "example",
+assay = "screening", plate_folder = "plate1", file_type = ".pdf")}
 }
