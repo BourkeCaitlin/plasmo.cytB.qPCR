@@ -11,10 +11,10 @@
 #'
 #' @examples \dontrun{screeningReport(sub_directory = "lab-molecular", project = "example",
 #' assay = "screening", plate_folder = "plate1", file_type = ".pdf")}
-screeningReport <- function(sub_directory, project, assay, plate_folder, file_type = ".pdf") {
+screeningReport <- function(sub_directory, project, assay = "screening", plate_folder, file_type = ".pdf") {
 
 
-  rmarkdown::render(input = system.file("extdata/screening_report.Rmd",
+  suppressWarnings(rmarkdown::render(input = system.file("extdata/screening_report.Rmd",
                                         package="plasmo.cytB.qPCR"),
                     output_file = paste0(Sys.Date(),
                                          "_screening_classification_",
@@ -23,5 +23,7 @@ screeningReport <- function(sub_directory, project, assay, plate_folder, file_ty
                     params = list("sub_directory" = sub_directory,
                                   "project" = paste0(project),
                                   "assay" = paste0(assay),
-                                  "plate_folder" = paste0(plate_folder)))
+                                  "plate_folder" = paste0(plate_folder))))
+
+  return(print("check the results/screening folder to find the results !"))
 }
