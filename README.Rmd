@@ -18,14 +18,13 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of plasmo.cytB.qPCR is to ...
+`plasmo.cytB.qPCR` is a series of functions to easily analyse and QC real-time qPCR generated following the protocol published by [Canier *et al. 2013*](https://doi.org/10.1186/1475-2875-12-405), with parameters and cut-offs optimised for the QuantStudio. 
 
 ## Installation
 
 You can install the development version of plasmo.cytB.qPCR from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
 devtools::install_github("BourkeCaitlin/plasmo.cytB.qPCR")
 ```
 
@@ -33,23 +32,37 @@ devtools::install_github("BourkeCaitlin/plasmo.cytB.qPCR")
 
 First load the library
 
-``` r
+```{r}
 library(plasmo.cytB.qPCR)
 ```
 
 
 ### Start new project
 
-Next you will want to setup a new directory (or work within an existing directory) to store all your data and then subsequent results. To do this, the `startNewProject()` function will create the necessary folders, and force creation of a `project`folder. 
+THe first function you might want to use is `startNewProject()`. This creates the correct directory structure you will need to work with the other functions.
 
-For this function, you will need to specify a project name (i.e. studyID) and specify whether your species detection is either `"nested"` or `"direct"`.
+**PLEASE MAKE SURE TO ALWAYS BE WORKING WITHIN AN RProject**
 
+**`sub_directory`** if you are working within a directory relative to where your RProject starts, this will be the folder name you specify as the `sub_directory`.
 
-``` r 
-startNewProject(project = "project", species_type = "nested")
+**`project`** give the project you are working on a name. You will continue to reference this in all the other commands of this package.
+
+**`species_type`** the laboratory protocol can be adapted to determining detecting species by either *direct PCR* or with a *nested PCR*. As these two protocols require slightly different interpretation/thresholds, you will specify this in your project setup to create the correct sub-folders for storing data and results. **This needs to be either `"nested"` or `"direct"`.**
+
+Folders that exist already will not be overwritten. 
+
+```{r}
+startNewProject(sub_directory = "example_subdirectory", 
+                project = "project_name", 
+                species_type = "nested")
 ```
 
-This will create (where you are working) (within an R project !) the necessary folders for you to store your 'data' and then where 'results' will be saved with the following commands
+Your expected folder structure is:
+
+```{r}
+fs::dir_tree(path = "example_subdirectory")
+```
+
 
 ## Create Screening Report
 
