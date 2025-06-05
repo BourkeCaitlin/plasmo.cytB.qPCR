@@ -21,3 +21,6 @@ a list of results to be accessed to find plots, data etc
 \description{
 Classify screening results
 }
+\examples{
+\dontrun{classifyScreening(sub_directory = "sub_directory",project="project_name", assay = "screening", plate_folder ="plate1")}
+}

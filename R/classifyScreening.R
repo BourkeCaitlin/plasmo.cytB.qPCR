@@ -9,7 +9,7 @@
 #' @export classifyScreening
 #'
 #' @examples
-#'\dontrun{classifyScreening("sub_directory", "example", "screening", "plate1)}
+#'\dontrun{classifyScreening(sub_directory = "sub_directory",project="project_name", assay = "screening", plate_folder ="plate1")}
 
 classifyScreening <- function(sub_directory, project, assay = "screening", plate_folder) {
   temperature_range_screening <- c(76.5, 80.5)

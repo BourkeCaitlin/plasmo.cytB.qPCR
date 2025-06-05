@@ -11,7 +11,7 @@ startNewProject(project, sub_directory = "", species_type)
 
 \item{sub_directory}{if working within a folder at the root, specify this here. if not, leave blank}
 
-\item{species_type}{either 'nested' or 'direct' depending on the type of species protocol to be use for the project}
+\item{species_type}{either 'nested_species' or 'direct_species' depending on the type of species protocol to be use for the project}
 }
 \value{
 folder structure at current working directory
@@ -20,6 +20,6 @@ folder structure at current working directory
 Generate folder structure to save results
 }
 \examples{
-\dontrun{startNewProject(project = "example", sub_directory = "lab-molecular", species_type = "nested")}
+\dontrun{startNewProject(project = "example", sub_directory = "lab-molecular", species_type = "nested_species")}
 
 }
