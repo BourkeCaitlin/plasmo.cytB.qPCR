@@ -89,7 +89,7 @@ dth_vec_header <- nchar(colnames(to_save))  + 2
 width_vec <- dplyr::bind_cols(text = width_vec, header = dth_vec_header) %>% 
   dplyr::mutate(col_no = paste0("col", 1:length((to_save)))) %>%
   tidyr::pivot_longer(-col_no) %>% 
-  dplyr::mutate(value = case_when(
+  dplyr::mutate(value = dplyr::case_when(
     value==Inf ~0, 
      TRUE~value))  %>% 
   dplyr::group_by(col_no) %>%  
