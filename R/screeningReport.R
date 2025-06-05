@@ -19,7 +19,7 @@ screeningReport <- function(sub_directory, project, assay, plate_folder, file_ty
                     output_file = paste0(Sys.Date(),
                                          "_screening_classification_",
                                          project, "-", plate_folder, file_type),
-                    output_dir = paste0(here::here(),"/", sub_directory, "/results/", project, "/", assay, "/report/"),
+                    output_dir = paste0(here::here(),"/", sub_directory,"/", project,"/results/", assay, "/report/"),
                     params = list("project" = paste0(project),
                                   "assay" = paste0(assay),
                                   "plate_folder" = paste0(plate_folder)))
