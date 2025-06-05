@@ -32,10 +32,11 @@ The first function you will likely want to use is `startNewProject()`.
 This creates the correct directory structure you will need to work with
 the other functions.
 
-**PLEASE ALSO MAKE SURE TO ALWAYS BE WORKING WITHIN AN RProject**. You
-can use the same .Rproj for all PCR projects and specify the different
-studies with the `project` variable (below), or if you prefer you can
-have a different RProject as well for each study - this may vary
+**PLEASE ALSO MAKE SURE TO ALWAYS BE WORKING WITHIN AN RProject**.
+
+You can use the same .Rproj for all PCR projects and specify the
+different studies with the `project` variable (below), or if you prefer
+you can have a different RProject as well for each study - this may vary
 depending on overall data setup.
 
 #### Key variables you need to specify:
@@ -52,7 +53,7 @@ detecting species by either *direct PCR* or with a *nested PCR*. As
 these two protocols require slightly different
 interpretation/thresholds, you will specify this in your project setup
 to create the correct sub-folders for storing data and results. **This
-needs to be either `"nested"` or `"direct"`.**
+needs to be either “nested” or “direct”.**
 
 Folders that exist already will not be overwritten.
 
@@ -81,7 +82,7 @@ You will need to store your results (xls/xlsx Quanstudio file) and plate
 map (containing the keyword **map** in the filename) **within a folder**
 inside the `screening` or `nested_species` directories. This **folder
 name will be used** in subsequent functions. Suggestion something
-similar to `plate1_initials/date`.
+similar to `plate1_initials-date`.
 
 ### Create Screening Report
 
@@ -107,11 +108,11 @@ specify `"screening"`
 **`plate_folder`** the name of the folder with the `results/screening`
 directory where the platemap (with **map** in the filename) and
 Quantstudio file are stored. Suggestion something similar to
-`plate1_initials/date`.
+`plate1_initials-date`.
 
-**`file_type**` here specify either **`".pdf"`\*\* or **`".html"`**
-depending on whether you want the output report to be in pdf or html
-format (html will typically work if pdf throws you errors…)
+**`file_type`** here specify either **“.pdf”** or **“.html”** depending
+on whether you want the output report to be in pdf or html format (html
+will typically work if pdf throws you errors…)
 
 ``` r
 screeningReport(sub_directory = "example_subdirectory",
@@ -146,5 +147,7 @@ This will return a `list` containing
 2.  Melt curve splits by category
 3.  Amplification curves
 4.  Colour platelayout
-5.  Nested list of raw data 1. Consolidated results 2. All meltcurve
-    data 3. All amplification curve data
+5.  Nested list of raw data
+    1.  Consolidated results
+    2.  All meltcurve data
+    3.  All amplification curve data
