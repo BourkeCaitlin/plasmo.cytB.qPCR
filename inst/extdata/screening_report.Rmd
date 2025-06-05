@@ -6,6 +6,7 @@ header-includes:
 mainfont: SourceSansPro
 classoption: landscape
 params:
+  sub_directory: sub_directory
   project: projet
   assay: assay
   plate_folder: plate_folder
@@ -16,7 +17,8 @@ library(here)
 knitr::opts_chunk$set(echo = FALSE, fig.width=12, fig.height=7, warning = F)
 
 
-data <- classifyScreening(project = params$project,
+data <- classifyScreening(sub_directory = params$sub_directory,
+                          project = params$project,
                           assay = params$assay, 
                           plate_folder = params$plate_folder)
 ```
@@ -99,6 +101,10 @@ width_vec <- dplyr::bind_cols(text = width_vec, header = dth_vec_header) %>%
 openxlsx::setColWidths(results, "screening", cols = 1:ncol(to_save), widths = width_vec$value)
 
 
-openxlsx::saveWorkbook(results,file = here::here("results/", project, "/", assay, "/spreadsheet/",file_name), overwrite = T )
+openxlsx::saveWorkbook(results,
+                       file = here::here(params$sub_directory, "/",
+                                         params$project,
+                                         "results/", params$assay, 
+                                         "/spreadsheet/",file_name), overwrite = T )
 ```
 
