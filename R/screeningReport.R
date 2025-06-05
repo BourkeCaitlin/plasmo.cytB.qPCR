@@ -6,7 +6,7 @@
 #' @param file_type ".pdf" or ".html" depending on the output file you want
 #'
 #' @return pdf or html file of results
-#' @export
+#' @export screeningReport
 #'
 #' @examples \dontrun{screeningReport("example", "screening", "plate1", ".pdf")}
 screeningReport <- function(project, assay, plate_folder, file_type = ".pdf") {

@@ -4,7 +4,7 @@
 #' @param species_type either 'nested' or 'direct' depending on the type of species protocol to be use for the project
 #'
 #' @return folder structure at current working directory
-#' @export
+#' @export startNewProject
 #'
 #' @examples
 #' \dontrun{startNewProject("statem", "nested")}

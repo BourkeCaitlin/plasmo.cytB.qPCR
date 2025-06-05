@@ -5,10 +5,10 @@
 #' @param plate_folder what is the name of the folder where the results are saved
 #'
 #' @return a list of results to be accessed to find plots, data etc
-#' @export
+#' @export classifyScreening
 #'
 #' @examples
-#'
+#'\dontrun{classifyScreening("example", "screening", "plate1)}
 
 classifyScreening <- function(project, assay = "screening", plate_folder) {
   temperature_range_screening <- c(76.5, 80.5)
