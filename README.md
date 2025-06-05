@@ -8,7 +8,7 @@
 
 `plasmo.cytB.qPCR` is a series of functions to easily analyse and QC
 real-time qPCR generated following the protocol published by [Canier *et
-al. 2013*](https://doi.org/10.1186/1475-2875-12-405), with parameters
+al.* 2013](https://doi.org/10.1186/1475-2875-12-405), with parameters
 and cut-offs optimised for the QuantStudio.
 
 ## Installation
@@ -20,7 +20,7 @@ You can install the development version of plasmo.cytB.qPCR from
 devtools::install_github("BourkeCaitlin/plasmo.cytB.qPCR")
 ```
 
-### Starting a new PCR project
+## Starting a new PCR project
 
 First load the library when using functions from the package.
 
@@ -84,7 +84,7 @@ inside the `screening` or `nested_species` directories. This **folder
 name will be used** in subsequent functions. Suggestion something
 similar to `plate1_initials-date`.
 
-### Create Screening Report
+## Create Screening Report
 
 Following a *screening PCR*, to analyse and QC these results, use the
 `screeningReport()` function. This will generate within the
@@ -126,7 +126,7 @@ Provided there are no errors, this generates a report that is saved in
 `results/screening/report` and an xlsx file in
 `results/screening/spreadsheet`
 
-### Interact with results while in R
+## Interact with screening results while in R
 
 There may be scenarios where you would like to look at the results while
 in R and not just obtain the rendered report and spreadsheet.
