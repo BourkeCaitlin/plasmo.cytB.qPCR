@@ -53,14 +53,14 @@ detecting species by either *direct PCR* or with a *nested PCR*. As
 these two protocols require slightly different
 interpretation/thresholds, you will specify this in your project setup
 to create the correct sub-folders for storing data and results. **This
-needs to be either “nested” or “direct”.**
+needs to be either “nested_species” or “direct_species”.**
 
 Folders that exist already will not be overwritten.
 
 ``` r
 startNewProject(sub_directory = "example_subdirectory", 
                 project = "project_name", 
-                species_type = "nested")
+                species_type = "nested_species")
 ```
 
 Your folder structure should look like this:
