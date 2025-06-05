@@ -25,7 +25,7 @@ data <- classifyScreening(sub_directory = params$sub_directory,
 
 \newpage
 
-```{r plate map}
+```{r plate map, warning=FALSE}
 data[[4]]
 ```
 
@@ -43,7 +43,7 @@ data[[3]]
 
 \newpage
 
-```{r write results, include = F}
+```{r write results, include = F, warning=FALSE}
 file_name <- paste0(params$project, "-", params$plate_folder, "_screening_results.xlsx")
 
 to_save <- data[[5]][[1]] %>% 
