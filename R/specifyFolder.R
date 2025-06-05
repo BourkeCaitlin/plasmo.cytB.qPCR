@@ -14,7 +14,7 @@
 
 specifyFolder <- function(sub_directory, project, assay, plate_folder) {
 
-  files <- list.files(here::here(paste0("/",sub_directory, "data/", project, "/", assay, "/", plate_folder)))
+  files <- list.files(here::here(paste0("/",sub_directory, "/data/", project, "/", assay, "/", plate_folder)))
 
   plate_map <- stringr::str_detect(files, "map")
   eds <- stringr::str_detect(files, "eds")
