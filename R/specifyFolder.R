@@ -14,7 +14,7 @@
 
 specifyFolder <- function(sub_directory, project, assay, plate_folder) {
 
-  files <- list.files(here::here(paste0("/",sub_directory, "/data/", project, "/", assay, "/", plate_folder)))
+  files <- list.files(here::here(paste0(sub_directory, "/", project, "/data/", assay, "/", plate_folder)))
 
   plate_map <- stringr::str_detect(files, "map")
   eds <- stringr::str_detect(files, "eds")
@@ -23,8 +23,8 @@ specifyFolder <- function(sub_directory, project, assay, plate_folder) {
   plate_map_file_name <-  files[plate_map]
   quantstudio_file_name <-  files[quantstudio]
 
-  plate_map <- paste0(here::here(),"/",sub_directory,"/data/", project, "/", assay, "/", plate_folder, "/", files[plate_map])
-  quantstudio <- paste0(here::here(),"/",sub_directory,"/data/", project, "/", assay, "/", plate_folder, "/", files[quantstudio])
+  plate_map <- paste0(here::here(),"/",sub_directory,"/", project, "/data/",  assay, "/", plate_folder, "/", files[plate_map])
+  quantstudio <- paste0(here::here(),"/",sub_directory,"/", project, "/data/",  assay, "/", plate_folder, "/", files[quantstudio])
 
   return(c(plate_map, quantstudio))
 }
