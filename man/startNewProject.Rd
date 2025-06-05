@@ -4,12 +4,12 @@
 \alias{startNewProject}
 \title{Generate folder structure to save results}
 \usage{
-startNewProject(project, sub_directory = "", species_type)
+startNewProject(sub_directory = "", project, species_type)
 }
 \arguments{
-\item{project}{project name to use in folder structure}
-
 \item{sub_directory}{if working within a folder at the root, specify this here. if not, leave blank}
+
+\item{project}{project name to use in folder structure}
 
 \item{species_type}{either 'nested_species' or 'direct_species' depending on the type of species protocol to be use for the project}
 }
@@ -20,6 +20,6 @@ folder structure at current working directory
 Generate folder structure to save results
 }
 \examples{
-\dontrun{startNewProject(project = "example", sub_directory = "lab-molecular", species_type = "nested_species")}
+\dontrun{startNewProject(sub_directory = "lab-molecular",project = "example",  species_type = "nested_species")}
 
 }

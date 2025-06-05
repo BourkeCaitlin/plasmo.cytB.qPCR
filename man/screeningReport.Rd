@@ -7,7 +7,7 @@
 screeningReport(
   sub_directory,
   project,
-  assay,
+  assay = "screening",
   plate_folder,
   file_type = ".pdf"
 )
