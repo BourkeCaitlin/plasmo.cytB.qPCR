@@ -2,13 +2,13 @@
 #'
 #' @param project project name to use in folder structure
 #' @param species_type either 'nested' or 'direct' depending on the type of species protocol to be use for the project
-#' @param sub_directory a subdirectory at the root (where RProj is) where working with molecular data
+#' @param sub_directory if working within a folder at the root, specify this here. if not, leave blank
 #'
 #' @return folder structure at current working directory
 #' @export startNewProject
 #'
 #' @examples
-#' \dontrun{startNewProject("statem", "nested")}
+#' \dontrun{startNewProject(project = "example", sub_directory = "lab-molecular", species_type = "nested")}
 #'
 startNewProject <- function(project, sub_directory="", species_type) {
   dir.create(here::here(sub_directory), showWarnings = F)
