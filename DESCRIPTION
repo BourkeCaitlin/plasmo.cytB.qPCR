@@ -17,10 +17,12 @@ Imports:
     janitor,
     magrittr,
     openxlsx,
+    purrr,
     readxl,
     rlang,
     rmarkdown,
     scales,
+    stats,
     stringr,
     tibble,
     tidyr
