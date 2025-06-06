@@ -63,7 +63,7 @@ Your folder structure should look like this:
 ```{r echo = F, include = T}
 fs::dir_tree(path = "example_subdirectory")
 ```
-You will need to store your results (xls/xlsx Quanstudio file) and plate map (containing the keyword **map** in the filename) **within a folder** inside the `screening` or `nested_species` directories. This **folder name will be used** in subsequent functions. Suggestion something similar to `plate1_initials-date`.
+You will need to store your results (xls/xlsx Quantstudio file) and plate map (containing the keyword **map** in the filename) **within a folder** inside the `screening` or `nested_species` directories. This **folder name will be used** in subsequent functions. Suggestion something similar to `plate1_initials-date`.
 
 ## Create Screening Report
 
@@ -114,4 +114,44 @@ This will return a `list` containing
       2. All meltcurve data
       3. All amplification curve data
     
+## Create Nested Species Report
+
+Just like for a screening PCR, following a nested PCR, generate a QC summary (report) and spreadsheet using the `nestedSpeciesReport()` function. Parameters are the same as above with the except specify **`assay = "nested_species"`**
+
+#### Key variables you need to specify:
+
+**`sub_directory`** the same as above, if you are working within a directory relative to where your RProject starts, this will be the folder name you specify as the `sub_directory`.
+
+**`project`** this is the project name you specified in `startNewProject()` and is the name of the folder above `results` and `data`.
+
+**`assay`** this is generating a report for the **nested_species** assay, so specify `"nested_species"`
+
+**`plate_folder`** the name of the folder with the `results/nested_species` directory where the platemap (with **map** in the filename) and Quantstudio file are stored. Suggestion something similar to `plate1_initials-date`.
+
+**`file_type`** here specify either **".pdf"** or **".html"** depending on whether you want the output report to be in pdf or html format (html will typically work if pdf throws you errors...)
+
+## Interact with nested species results while in R
+
+Like for screening, you can interact with the results while in R and to do this use the `classifyNestedSpecies()` function with all the same parameters as `nestedSpeciesReport()` but with no `file_type` specified.
+
+# File specifications
+
+Within every results folder (specified with the `plate_folder` variable in the above functions) you will need two files. First is the Quanstudio results file that is exported from the `.eds` output of the machine. This will have a series of sheets automatically generated including 'Results', 'Melt Curve Raw Data' and 'Amplification Data'. You do not need to modify this file in any way after exporting it from the QuantStudio software. 
+
+Second, you will need to have a platemap file to designate the sample layout in the 96 well plate format. This requires the sheet of the platemap to be called `map` and if it is a species-specific PCR (nested or direct) you will also need a second sheet named `species_map` specifying which primers are in which wells (use Pf, Pv, Pm or Po). 
+
+**A screening platemap will look approximately like:**
+
+[](inst/images/screening_file_map.PNG)
+
+**A species platemap will look approximately like:**
+
+[](inst/images/nested-map1.PNG)
+
+[](inst/images/nested-map2.PNG)
+
+**FILE NAMING**
+
+Only the platemap file MUST have the word 'map' in the filename. The Quanstudio export does not have any naming requirements except to be the only other xls or xlsx file accompanying the map-named file in the folder. It is fine to store the original QuantStudio raw data (.eds) file in this same folder.
+
 
