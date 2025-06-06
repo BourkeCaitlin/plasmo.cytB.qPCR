@@ -205,13 +205,13 @@ specifying which primers are in which wells (use Pf, Pv, Pm or Po).
 
 **A screening platemap will look approximately like:**
 
-[](inst/images/screening_file_map.PNG)
+![](inst/images/screening_file_map.PNG)
 
 **A species platemap will look approximately like:**
 
-[](inst/images/nested-map1.PNG)
+![](inst/images/nested-map1.PNG)
 
-[](inst/images/nested-map2.PNG)
+![](inst/images/nested-map2.PNG)
 
 **FILE NAMING**
 
