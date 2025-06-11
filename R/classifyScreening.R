@@ -102,7 +102,7 @@ classifyScreening <- function(sub_directory, project, assay = "screening", plate
     ggplot2::geom_line(ggplot2::aes(group = well_position,
                   colour = color_plot),
               alpha = 0.7, size = 0.85)+
-    ggplot::geom_hline(yintercept = 100000, linetype = "dashed", colour = "grey")+ #add so there is some ref of scale
+    ggplot2::geom_hline(yintercept = 100000, linetype = "dashed", colour = "grey")+ #add so there is some ref of scale
     ggplot2::scale_y_continuous(labels = scales::comma)+
     ggplot2::scale_colour_manual(values = colour_named_classification_control)+
     ggplot2::theme_minimal()+
@@ -120,7 +120,7 @@ classifyScreening <- function(sub_directory, project, assay = "screening", plate
     ggplot2::geom_line(data = dplyr::filter(all_melt_temps, class_ct=="27 <=ct< 35"), ggplot2::aes(group = well_position, colour = class_ct), alpha = 0.7, size = 0.85)+
     ggplot2::geom_line(data = dplyr::filter(all_melt_temps, class_ct=="ct >= 35"), ggplot2::aes( group = well_position, colour = class_ct), alpha = 0.9, size = 0.85)+
     ggplot2::geom_line(data = dplyr::filter(all_melt_temps, class_ct=="no ct"), ggplot2::aes(group = well_position, colour = class_ct), alpha = 0.7, size = 0.85)+
-    ggplot::geom_hline(yintercept = 100000, linetype = "dashed", colour = "grey")+ #add so there is some ref of scale
+    ggplot2::geom_hline(yintercept = 100000, linetype = "dashed", colour = "grey")+ #add so there is some ref of scale
     ggplot2::facet_wrap(~color_plot, ncol = 2)+
     ggplot2::theme_minimal()+
     ggplot2::scale_colour_manual(values = colour_named_ct, breaks = c("ct < 27", "27 <=ct< 35", "ct >= 35", "no ct"))+
