@@ -16,6 +16,8 @@ startNewProject <- function(sub_directory="", project, species_type) {
   dir.create(here::here(paste0(sub_directory, "/", project, "/data/")), showWarnings = F)
   dir.create(here::here(paste0(sub_directory, "/", project, "/results/")), showWarnings = F)
 
+  dir.create(here::here(paste0(sub_directory, "/", project, "/data/rejected_plates")), showWarnings = F)
+
   dir.create(here::here(paste0(sub_directory, "/", project, "/results/screening/")), showWarnings = F)
   dir.create(here::here(paste0(sub_directory, "/", project, "/data/screening/")), showWarnings = F)
 
