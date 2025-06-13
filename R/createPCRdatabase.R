@@ -8,6 +8,10 @@
 #' @export createPCRdatabase
 #'
 #' @examples \dontrun{createPCRdatabase(sub_directory = "lab-molecular", project = "test_project", species_type = "nested_species")}
+sub_directory = "lab-molecular"
+project = "test_data"
+species_type = "nested_species"
+
 createPCRdatabase <- function(sub_directory, project, species_type) {
 
   ctrl_names <- c("ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext", "water", "H2o", "H2O", "H20", "Pf ctr", "Pf CTR", "PF Ctr", "PF CTR")
@@ -18,8 +22,23 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
  screening_results <- purrr::map(screening,readxl::read_excel) #read in all the files in the screening results
  species_results <- purrr::map(species,readxl::read_excel)#read in all the files in the species results
 
+
+
+ species_results <- purrr::map(species_results, function(x) x %>%
+              dplyr::filter(!x$sample_id%in%ctrl_names)) #removes the ctrl samples if present
+
+
+
+
  screening_results <- dplyr::bind_rows(screening_results) %>%
    dplyr::filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
+
+ #use different method for species results because of species might be on different plates
+
+ species_results <- species_results%>%
+   purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id")))
+
+
  species_results <- dplyr::bind_rows(species_results)%>%
    dplyr::filter(!sample_id%in%ctrl_names)#bind the list to make one big dataset
 
