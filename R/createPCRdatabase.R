@@ -8,9 +8,6 @@
 #' @export createPCRdatabase
 #'
 #' @examples \dontrun{createPCRdatabase(sub_directory = "lab-molecular", project = "test_project", species_type = "nested_species")}
-sub_directory = "lab-molecular"
-project = "test_data"
-species_type = "nested_species"
 
 createPCRdatabase <- function(sub_directory, project, species_type) {
 
@@ -34,13 +31,13 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
    dplyr::filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
 
  #use different method for species results because of species might be on different plates
+if (length(species_results)<1) {
+  print("there are no species results")
+}else if (length(species_results)>=1) {
+  ( species_results <- species_results%>%
+      purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id"))))
 
- species_results <- species_results%>%
-   purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id")))
-
-
- species_results <- dplyr::bind_rows(species_results)%>%
-   dplyr::filter(!sample_id%in%ctrl_names)#bind the list to make one big dataset
+}
 
  merged <- dplyr::full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
 
