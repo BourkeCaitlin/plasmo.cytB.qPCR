@@ -11,7 +11,7 @@
 
 createPCRdatabase <- function(sub_directory, project, species_type) {
 
-  ctrl_names <- c("ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext", "water", "H2o", "H2O", "H20", "Pf ctr", "Pf CTR", "PF Ctr", "PF CTR")
+  ctrl_names <- c("ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext", "water", "H2o", "H2O", "H20", "Pf ctr", "Pf CTR", "PF Ctr", "PF CTR", "h2o")
 
   screening <- list.files(here::here(paste0(sub_directory, "/", project, "/results/screening/spreadsheet")),full.names = T)
   species <- list.files(here::here(paste0(sub_directory, "/", project, "/results/",species_type,"/spreadsheet")), full.names = T)
