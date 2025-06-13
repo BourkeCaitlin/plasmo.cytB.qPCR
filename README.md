@@ -69,6 +69,7 @@ Your folder structure should look like this:
     #> └── project_name
     #>     ├── data
     #>     │   ├── nested_species
+    #>     │   ├── rejected_plates
     #>     │   └── screening
     #>     └── results
     #>         ├── nested_species
@@ -220,3 +221,25 @@ Quanstudio export does not have any naming requirements except to be the
 only other xls or xlsx file accompanying the map-named file in the
 folder. It is fine to store the original QuantStudio raw data (.eds)
 file in this same folder.
+
+## Merge all results into one database
+
+The `createPCRdatabase()` function is to be used when wanting to merge
+results from one project into one project. This function has several
+assumptions…
+
+1.  If you have repeated a plate for QC purposes, you have stored the
+    ‘rejected’ results somewhere else - **importantly, they are not
+    stored in the results folder for screening or
+    nested_species/direct_species**
+2.  If for example you have one sample on plate that you had had to
+    repeat, you modify the sampleID to flag this as a rejected sample
+    with ‘-REJ’ for example. This prevents merging issues
+
+### Usage
+
+``` r
+createPCRdatabase(sub_directory = "sub_directory",
+                  project = "project_name",
+                  species_type = "nested_species")
+```
