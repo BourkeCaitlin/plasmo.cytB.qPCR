@@ -32,7 +32,7 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
 
  #use different method for species results because of species might be on different plates
 if (length(species_results)<1) {
-  print("there are no species results")
+  print("there are no species results, results include just screening")
 
   merged <- screening_results
 }else if (length(species_results)>=1) {
@@ -40,7 +40,7 @@ if (length(species_results)<1) {
       purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id"))))
 
   merged <- dplyr::full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
-
+  print("screening and species results are merged")
 
 }
 
