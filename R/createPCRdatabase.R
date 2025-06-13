@@ -18,8 +18,10 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
  screening_results <- purrr::map(screening,readxl::read_excel) #read in all the files in the screening results
  species_results <- purrr::map(species,readxl::read_excel)#read in all the files in the species results
 
- screening_results <- dplyr::bind_rows(screening_results) %>% filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
- species_results <- dplyr::bind_rows(species_results)%>% filter(!sample_id%in%ctrl_names)#bind the list to make one big dataset
+ screening_results <- dplyr::bind_rows(screening_results) %>%
+   dplyr::filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
+ species_results <- dplyr::bind_rows(species_results)%>%
+   dplyr::filter(!sample_id%in%ctrl_names)#bind the list to make one big dataset
 
  merged <- dplyr::full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
 
@@ -29,7 +31,7 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
  file_name <- paste0(Sys.Date(), "-", project, "-database-merged.xlsx")
 
  to_save <- merged %>%
-   dplyr::select(sample_id, dplyr::contains("classification"), everything())
+   dplyr::select(sample_id, dplyr::contains("classification"), dplyr::everything())
 
  style_rounded = openxlsx::createStyle(numFmt="0,00")
 
