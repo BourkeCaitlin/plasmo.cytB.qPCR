@@ -21,7 +21,7 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
  screening_results <- dplyr::bind_rows(screening_results) %>% filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
  species_results <- dplyr::bind_rows(species_results)%>% filter(!sample_id%in%ctrl_names)#bind the list to make one big dataset
 
- merged <- full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
+ merged <- dplyr::full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
 
 
  ### write excel
