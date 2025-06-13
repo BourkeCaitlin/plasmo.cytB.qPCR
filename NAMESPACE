@@ -3,6 +3,7 @@
 export("%>%")
 export(classifyNestedSpecies)
 export(classifyScreening)
+export(createPCRdatabase)
 export(importQuantStudio)
 export(nestedSpeciesReport)
 export(screeningReport)
