@@ -20,6 +20,6 @@ folder structure at current working directory
 Generate folder structure to save results
 }
 \examples{
-\dontrun{startNewProject(sub_directory = "lab-molecular",project = "example",  species_type = "nested_species")}
+startNewProject(sub_directory = "lab-molecular",project = "example",  species_type = "nested_species")
 
 }

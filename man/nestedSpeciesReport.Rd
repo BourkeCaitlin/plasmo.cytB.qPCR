@@ -29,3 +29,6 @@ a pdf and excel spreadsheet saved in results folder
 \description{
 Create report for nested species PCR
 }
+\examples{
+\dontrun{nestedSpeciesReport(sub_directory = "lab-molecular",project = "project_name",  assay = "nested_species", plate_folder ="example-nestedspecies-plate1", file_type = ".pdf" )}
+}
