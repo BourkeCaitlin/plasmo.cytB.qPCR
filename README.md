@@ -243,3 +243,71 @@ createPCRdatabase(sub_directory = "sub_directory",
                   project = "project_name",
                   species_type = "nested_species")
 ```
+
+## Follow along with an example:
+
+Within the ‘data’ folder there are example raw data and example QC
+reports too, stored in their respective folders. You can test the above
+functions with the above data downloading the ‘data’ folder.
+
+1.  startNewProject(), using ‘data’ as the sub_directory
+
+``` r
+startNewProject(sub_directory = "data", project = "example", species_type = "nested_species")
+```
+
+2.  Generate screeningReport()
+
+-   to generate pdf report
+
+``` r
+screeningReport(sub_directory = "data", 
+                project = "example", 
+                assay = "screening",
+                plate_folder = "example-screening-plate1",
+                file_type = ".pdf")
+```
+
+-   to generate html report (sometimes pdf will bug depending on
+    computer, and html will usually work)
+
+``` r
+screeningReport(sub_directory = "data", 
+                project = "example", 
+                assay = "screening",
+                plate_folder = "example-screening-plate1",
+                file_type = ".html")
+```
+
+By default `assay = "screening"` and does not need to be explicitly
+specified when calling screeningReport.
+
+3.  Generate nestedSpeciesReport()
+
+-   to generate pdf output
+
+``` r
+nestedSpeciesReport(sub_directory = "data", 
+                project = "example", 
+                assay = "nested_species",
+                plate_folder = "example-nestedspecies-plate1",
+                file_type = ".pdf")
+```
+
+-   to generate html output
+
+``` r
+nestedSpeciesReport(sub_directory = "data", 
+                project = "example", 
+                assay = "nested_species",
+                plate_folder = "example-nestedspecies-plate1",
+                file_type = ".html")
+```
+
+4.  Summarise all results from project in validated plates
+
+``` r
+createPCRdatabase(sub_directory = "data",
+                  project = "example",
+                  species_type = "nested_species")
+```
