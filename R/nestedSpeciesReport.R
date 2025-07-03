@@ -10,6 +10,8 @@
 #' @export nestedSpeciesReport
 #'
 #' @examples
+#' \dontrun{nestedSpeciesReport(sub_directory = "lab-molecular",project = "project_name",  assay = "nested_species", plate_folder ="example-nestedspecies-plate1", file_type = ".pdf" )}
+
 nestedSpeciesReport <- function(sub_directory, project, assay = "nested_species", plate_folder, file_type = ".pdf") {
 
 
