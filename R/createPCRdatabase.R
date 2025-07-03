@@ -53,6 +53,35 @@ if (length(species_results)<1) {
  to_save <- merged %>%
    dplyr::select(sample_id, dplyr::contains("classification"), dplyr::everything())
 
+ ## create classification_summary
+
+ nested_summary = to_save %>%
+   dplyr::select(sample_id, contains("class"), -contains("screen")) %>%
+   tidyr::pivot_longer(-sample_id) %>%
+   dplyr::mutate(name = stringr::str_sub(name, 16, 17)) %>%
+   dplyr::filter(value=="positive") %>%
+   dplyr::mutate(value = name) %>%
+   tidyr::pivot_wider(names_from = name, values_from = value) %>%
+   tidyr::unite(classification_summary, -1, sep = " & ") %>%
+   dplyr::mutate(classification_summary = stringr::str_replace(classification_summary, " & NA|NA & ", ""))
+
+
+ to_save <- to_save %>%
+   dplyr::left_join(nested_summary) %>%
+   dplyr::select(sample_id, classification_summary, contains("class"), everything()) %>%
+   dplyr::mutate(classification_summary = dplyr::case_when(
+     !is.na(classification_summary) ~ classification_summary,
+     classification_screening=="positive" ~ "screening pos, need species",
+     classification_screening=="negative" ~ "negative"
+   )) %>%
+   dplyr::mutate(classification_summary = dplyr::case_when(
+     stringr::str_detect(classification_summary, "\\&") ~ paste0(classification_summary, " co-infection"),
+     !stringr::str_detect(classification_summary, "neg") &!stringr::str_detect(classification_summary, "pos") ~ paste0(classification_summary, " infection"),
+     T ~ classification_summary
+   ))
+
+
+
  style_rounded = openxlsx::createStyle(numFmt="0,00")
 
  results <- openxlsx::createWorkbook()
@@ -62,6 +91,12 @@ if (length(species_results)<1) {
  format_spp_pos <- openxlsx::createStyle(bgFill = "#BC2728")
  format_spp_neg <- openxlsx::createStyle(bgFill = "#BCD7FB")
  style_rounded = openxlsx::createStyle(numFmt="0.00")
+
+ format_spp_pv<- openxlsx::createStyle(bgFill = "#f0de56")
+ format_spp_copfpv<- openxlsx::createStyle(bgFill = "#FFA500")
+ format_spp_pf<- openxlsx::createStyle(bgFill = "#f05b43")
+ format_spp_screen<- openxlsx::createStyle(bgFill = "#c7a2b6")
+
 
 
  openxlsx::conditionalFormatting(results, "merged-database", 1:ncol(to_save),
@@ -77,6 +112,41 @@ if (length(species_results)<1) {
                                  style = format_spp_neg,
                                  type = "contains",
                                  rows = 1:nrow(to_save)+1)
+
+
+
+ openxlsx::conditionalFormatting(results, "merged-database",
+                                 1:ncol(to_save),
+                                 rule = "pv",
+                                 style = format_spp_pv,
+                                 type = "contains",
+                                 rows = 1:nrow(to_save)+1)
+
+ openxlsx::conditionalFormatting(results, "merged-database",
+                                 1:ncol(to_save),
+                                 rule = "pf",
+                                 style = format_spp_pf,
+                                 type = "contains",
+                                 rows = 1:nrow(to_save)+1)
+
+ openxlsx::conditionalFormatting(results, "merged-database",
+                                 1:ncol(to_save),
+                                 rule = "co-infection",
+                                 style = format_spp_copfpv,
+                                 type = "contains",
+                                 rows = 1:nrow(to_save)+1)
+
+ openxlsx::conditionalFormatting(results, "merged-database",
+                                 1:ncol(to_save),
+                                 rule = "need",
+                                 style = format_spp_screen,
+                                 type = "contains",
+                                 rows = 1:nrow(to_save)+1)
+
+
+
+
+
 
  # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 4)
  # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 5)
