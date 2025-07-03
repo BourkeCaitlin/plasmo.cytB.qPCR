@@ -8,7 +8,7 @@
 #' @export startNewProject
 #'
 #' @examples
-#' \dontrun{startNewProject(sub_directory = "lab-molecular",project = "example",  species_type = "nested_species")}
+#' startNewProject(sub_directory = "lab-molecular",project = "example",  species_type = "nested_species")
 #'
 startNewProject <- function(sub_directory="", project, species_type) {
   dir.create(here::here(sub_directory), showWarnings = F)
