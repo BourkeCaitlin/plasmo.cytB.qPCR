@@ -117,14 +117,14 @@ if (length(species_results)<1) {
 
  openxlsx::conditionalFormatting(results, "merged-database",
                                  1:ncol(to_save),
-                                 rule = "pv",
+                                 rule = "pv ",
                                  style = format_spp_pv,
                                  type = "contains",
                                  rows = 1:nrow(to_save)+1)
 
  openxlsx::conditionalFormatting(results, "merged-database",
                                  1:ncol(to_save),
-                                 rule = "pf",
+                                 rule = "pf ",
                                  style = format_spp_pf,
                                  type = "contains",
                                  rows = 1:nrow(to_save)+1)
