@@ -72,7 +72,7 @@ if (length(species_results)<1) {
    dplyr::mutate(classification_summary = dplyr::case_when(
      !is.na(classification_summary) ~ classification_summary,
      classification_screening=="negative" ~ "negative",
-     classification_screening=="positive" ~ "screening pos, need species",
+     classification_screening=="positive" & is.na(classification_pf_nested) ~ "screening pos, need species",
    )) %>%
    dplyr::mutate(classification_summary = dplyr::case_when(
      stringr::str_detect(classification_summary, "\\&") ~ paste0(classification_summary, " co-infection"),
