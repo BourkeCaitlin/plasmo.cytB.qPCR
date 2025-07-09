@@ -30,14 +30,27 @@ createPCRdatabase <- function(sub_directory, project, species_type) {
  screening_results <- dplyr::bind_rows(screening_results) %>%
    dplyr::filter(!sample_id%in%ctrl_names) #bind the list to make one big dataset
 
+ species_results <- dplyr::bind_rows(species_results) %>%
+   dplyr::filter(!sample_id%in%ctrl_names)
+
+
+
+ species_results <- dplyr::bind_rows(species_results) %>%
+   dplyr::mutate_if(is.numeric, as.character) %>%
+   tidyr::pivot_longer(-sample_id) %>%
+   tidyr::drop_na() %>%
+   tidyr::pivot_wider(names_from = "name", values_from = "value")
+
  #use different method for species results because of species might be on different plates
 if (length(species_results)<1) {
   print("there are no species results, results include just screening")
 
   merged <- screening_results
 }else if (length(species_results)>=1) {
-  ( species_results <- species_results%>%
-      purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id"))))
+
+  ## this isn't working for now have implemented above pivot longer and wider - this will break if dup samples...so think of a way to resolve
+  # ( species_results <- species_results%>%
+  #     purrr::reduce(function(x, y) dplyr::full_join(x, y, by = c("sample_id"))))
 
   merged <- dplyr::full_join(screening_results, species_results, by = "sample_id")  #combine both screening and nested
   print("screening and species results are merged")
@@ -73,6 +86,7 @@ if (length(species_results)<1) {
      !is.na(classification_summary) ~ classification_summary,
      classification_screening=="negative" ~ "negative",
      classification_screening=="positive" & is.na(classification_pf_nested) ~ "screening pos, need species",
+     T~"negative"
    )) %>%
    dplyr::mutate(classification_summary = dplyr::case_when(
      stringr::str_detect(classification_summary, "\\&") ~ paste0(classification_summary, " co-infection"),
@@ -148,10 +162,7 @@ if (length(species_results)<1) {
 
 
 
- # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 4)
- # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 5)
- # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 6)
- # openxlsx::addStyle(results, "merged-database", style_rounded, rows = 1:nrow(to_save)+1, cols = 7)
+
 
 
  openxlsx::writeDataTable(results, "merged-database", to_save, startRow = 1, startCol = 1, tableStyle = "TableStyleLight9")
