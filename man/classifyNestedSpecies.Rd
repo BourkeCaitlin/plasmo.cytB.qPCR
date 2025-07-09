@@ -27,6 +27,6 @@ list object with plots and raw data
 Classify Nested qPCR data
 }
 \examples{
-\dontrun{classifyNested(sub_directory = "lab-molecular", project = "project_name", assay = "nested_species", plate_folder = "plate1")}
+\dontrun{classifyNestedSpecies(sub_directory = "lab-molecular", project = "project_name", assay = "nested_species", plate_folder = "plate1")}
 
 }
