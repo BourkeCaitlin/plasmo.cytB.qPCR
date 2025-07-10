@@ -72,7 +72,7 @@ classifyDirectSpecies <- function(sub_directory, project, assay = "direct_specie
   ##### define positive samples
 
   QuantStudioData[[1]] <- QuantStudioData[[1]] %>%
-    dplyr::mutate(classification = case_when(
+    dplyr::mutate(classification = dplyr::case_when(
       ct<=35 & tm1 > temperature_range_pf[1] & tm1 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 2000 ~"Pf positive",
       ct<=35 & tm2 > temperature_range_pf[1] & tm2 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 2000 ~"Pf positive",
 
@@ -89,9 +89,9 @@ classifyDirectSpecies <- function(sub_directory, project, assay = "direct_specie
       TRUE ~"negative")) %>%
     dplyr::mutate(species_classification = factor(classification,
                                            levels = c("Pf positive", "Pv positive", "Pm positive", "Po positive", "negative"))) %>%
-    dplyr::mutate(classification_global = case_when(str_detect(species_classification, "positive")~"positive",
+    dplyr::mutate(classification_global = dplyr::case_when(str_detect(species_classification, "positive")~"positive",
                                              TRUE~"negative")) %>%
-    dplyr::mutate(class_ct = case_when(
+    dplyr::mutate(class_ct = dplyr::case_when(
       ct<10 ~ "ct < 10",
       ct<20 & ct>=10 ~"10 <= ct < 20",
       ct<=35 & ct>=20 ~"20<= ct <= 35",
