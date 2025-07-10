@@ -28,7 +28,7 @@ importQuantStudio <- function(INPUT_PLATELAYOUT, INPUT_QUANTSTUDIO) {
     dplyr::mutate(well_position = paste0(row, col))
   plate_layout <- plate_layout %>%
     dplyr::mutate(class_sample = dplyr::case_when(
-      .data$sample_id%in%c("ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext") ~ "negative extraction control",
+      .data$sample_id%in%c("control", "ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext") ~ "negative extraction control",
       .data$sample_id%in%c("h2o", "water", "H2O", "H20") ~ "pcr water control",
       .data$sample_id%in%c("pf ctr", "ctr pf", "CTR Positif", "PF CTR", "Pf ctr") ~"positive extraction control",
       TRUE ~"samples"
