@@ -89,7 +89,7 @@ classifyDirectSpecies <- function(sub_directory, project, assay = "direct_specie
       TRUE ~"negative")) %>%
     dplyr::mutate(species_classification = factor(classification,
                                            levels = c("Pf positive", "Pv positive", "Pm positive", "Po positive", "negative"))) %>%
-    dplyr::mutate(classification_global = dplyr::case_when(str_detect(species_classification, "positive")~"positive",
+    dplyr::mutate(classification_global = dplyr::case_when(stringr::str_detect(species_classification, "positive")~"positive",
                                              TRUE~"negative")) %>%
     dplyr::mutate(class_ct = dplyr::case_when(
       ct<10 ~ "ct < 10",
