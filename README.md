@@ -246,14 +246,28 @@ createPCRdatabase(sub_directory = "sub_directory",
 
 ## Follow along with an example:
 
-Within the ‘data’ folder there are example raw data and example QC
-reports too, stored in their respective folders. You can test the above
-functions with the above data downloading the ‘data’ folder.
+Within the ‘example-data’ folder there are example raw data and example
+QC reports too.
 
-1.  startNewProject(), using ‘data’ as the sub_directory
+You can test the above functions with this test data downloading the
+‘example-data’ folder. `example-data` will be the sub_directory,
+`project_name` will be the project and `nested_species` will be the
+species_type. This should reproduce the results found in the `results`
+folder.
+
+Before starting **you always need to be working with an Rproj, so don’t
+forget to create a new .Rproj file and then move this example data
+relative to the Rproj**
 
 ``` r
-startNewProject(sub_directory = "data", project = "example", species_type = "nested_species")
+library(plasmo.cytB.qPCR)
+```
+
+1.  startNewProject(), using ‘example-data’ as the sub_directory and
+    `project-name` as project.
+
+``` r
+startNewProject(sub_directory = "example-data", project = "project-name", species_type = "nested_species")
 ```
 
 2.  Generate screeningReport()
@@ -261,8 +275,8 @@ startNewProject(sub_directory = "data", project = "example", species_type = "nes
 -   to generate pdf report
 
 ``` r
-screeningReport(sub_directory = "data", 
-                project = "example", 
+screeningReport(sub_directory = "example-data", 
+                project = "project-name", 
                 assay = "screening",
                 plate_folder = "example-screening-plate1",
                 file_type = ".pdf")
@@ -272,8 +286,8 @@ screeningReport(sub_directory = "data",
     computer, and html will usually work)
 
 ``` r
-screeningReport(sub_directory = "data", 
-                project = "example", 
+screeningReport(sub_directory = "example-data", 
+                project = "project-name", 
                 assay = "screening",
                 plate_folder = "example-screening-plate1",
                 file_type = ".html")
@@ -287,8 +301,8 @@ specified when calling screeningReport.
 -   to generate pdf output
 
 ``` r
-nestedSpeciesReport(sub_directory = "data", 
-                project = "example", 
+nestedSpeciesReport(sub_directory = "example-data", 
+                project = "project-name", 
                 assay = "nested_species",
                 plate_folder = "example-nestedspecies-plate1",
                 file_type = ".pdf")
@@ -297,8 +311,8 @@ nestedSpeciesReport(sub_directory = "data",
 -   to generate html output
 
 ``` r
-nestedSpeciesReport(sub_directory = "data", 
-                project = "example", 
+nestedSpeciesReport(sub_directory = "example-data", 
+                project = "project-name", 
                 assay = "nested_species",
                 plate_folder = "example-nestedspecies-plate1",
                 file_type = ".html")
@@ -307,7 +321,7 @@ nestedSpeciesReport(sub_directory = "data",
 4.  Summarise all results from project in validated plates
 
 ``` r
-createPCRdatabase(sub_directory = "data",
-                  project = "example",
+createPCRdatabase(sub_directory = "example-data",
+                  project = "project-name",
                   species_type = "nested_species")
 ```
