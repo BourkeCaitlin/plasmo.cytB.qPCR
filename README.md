@@ -36,17 +36,15 @@ the other functions.
 
 You can use the same .Rproj for all PCR projects and specify the
 different studies with the `project` variable (below), or if you prefer
-you can have a different RProject as well for each study - this may vary
-depending on overall data setup.
+you can have a different RProject for each study.
 
 #### Key variables you need to specify:
 
-**`sub_directory`** if you are working within a directory relative to
-where your RProject starts, this will be the folder name you specify as
-the `sub_directory`.
+**`sub_directory`** you need to specify a directory relative to where
+your RProject starts, this will be the folder name you specify as the
+`sub_directory`. Do not leave blank.
 
-**`project`** give the project you are working on a name. You will
-continue to reference this in all the other commands of this package.
+**`project`** give the project you are working on a name.
 
 **`species_type`** the laboratory protocol can be adapted to determining
 detecting species by either *direct PCR* or with a *nested PCR*. As
@@ -55,7 +53,7 @@ interpretation/thresholds, you will specify this in your project setup
 to create the correct sub-folders for storing data and results. **This
 needs to be either “nested_species” or “direct_species”.**
 
-Folders that exist already will not be overwritten.
+**Folders that exist already will not be overwritten. **
 
 ``` r
 startNewProject(sub_directory = "example_subdirectory", 
@@ -63,15 +61,19 @@ startNewProject(sub_directory = "example_subdirectory",
                 species_type = "nested_species")
 ```
 
-Your folder structure should look like this:
+Your folder structure should look like this, without the raw data
+folders. You will add these manually as you generate data.
 
     #> example_subdirectory
     #> └── project_name
     #>     ├── data
     #>     │   ├── nested_species
+    #>     │   │   └── example-nestedspecies-plate1
     #>     │   ├── rejected_plates
     #>     │   └── screening
+    #>     │       └── example-screening-plate1
     #>     └── results
+    #>         ├── merged_database
     #>         ├── nested_species
     #>         │   ├── report
     #>         │   └── spreadsheet
@@ -81,9 +83,9 @@ Your folder structure should look like this:
 
 You will need to store your results (xls/xlsx Quantstudio file) and
 plate map (containing the keyword **map** in the filename) **within a
-folder** inside the `screening` or `nested_species` directories. This
-**folder name will be used** in subsequent functions. Suggestion
-something similar to `plate1_initials-date`.
+folder (shown above)** inside the `screening` or `nested_species`
+directories. This **folder name will be used** in subsequent functions.
+Suggestion something similar to `plate1_initials`.
 
 ## Create Screening Report
 
@@ -95,25 +97,22 @@ spreadsheet folders, respectively.
 
 #### Key variables you need to specify:
 
-**`sub_directory`** the same as above, if you are working within a
-directory relative to where your RProject starts, this will be the
-folder name you specify as the `sub_directory`.
+**`sub_directory`** the same as above, as specified in
+`startNewProject()`
 
-**`project`** this is the project name you specified in
-`startNewProject()` and is the name of the folder above `results` and
-`data`.
+**`project`** the same as above, as specified in `startNewProject()`
 
 **`assay`** this is generating a report for the **screening** assay, so
 specify `"screening"`
 
 **`plate_folder`** the name of the folder with the `results/screening`
 directory where the platemap (with **map** in the filename) and
-Quantstudio file are stored. Suggestion something similar to
-`plate1_initials-date`.
+Quantstudio xls/x export are stored. Suggestion something similar to
+`plate1_initials`.
 
-**`file_type`** here specify either **“.pdf”** or **“.html”** depending
-on whether you want the output report to be in pdf or html format (html
-will typically work if pdf throws you errors…)
+**`file_type`** here specify either **`".pdf"`** or **`".html"`**
+depending on whether you want the output report to be in pdf or html
+format (html will typically work if pdf throws you an error)
 
 ``` r
 screeningReport(sub_directory = "example_subdirectory",
@@ -162,13 +161,10 @@ function. Parameters are the same as above with the except specify
 
 #### Key variables you need to specify:
 
-**`sub_directory`** the same as above, if you are working within a
-directory relative to where your RProject starts, this will be the
-folder name you specify as the `sub_directory`.
+**`sub_directory`** the same as above, as specified in
+`startNewProject()`
 
-**`project`** this is the project name you specified in
-`startNewProject()` and is the name of the folder above `results` and
-`data`.
+**`project`** the same as above, as specified in `startNewProject()`
 
 **`assay`** this is generating a report for the **nested_species**
 assay, so specify `"nested_species"`
@@ -176,11 +172,9 @@ assay, so specify `"nested_species"`
 **`plate_folder`** the name of the folder with the
 `results/nested_species` directory where the platemap (with **map** in
 the filename) and Quantstudio file are stored. Suggestion something
-similar to `plate1_initials-date`.
+similar to `plate1_initials`.
 
-**`file_type`** here specify either **“.pdf”** or **“.html”** depending
-on whether you want the output report to be in pdf or html format (html
-will typically work if pdf throws you errors…)
+**`file_type`** here specify either **“.pdf”** or **“.html”**
 
 ## Interact with nested species results while in R
 
@@ -188,21 +182,40 @@ Like for screening, you can interact with the results while in R and to
 do this use the `classifyNestedSpecies()` function with all the same
 parameters as `nestedSpeciesReport()` but with no `file_type` specified.
 
+``` r
+classifyNestedSpecies(sub_directory = "example_subdirectory",
+                  project = "project_name", 
+                  assay = "nested_species", 
+                  plate_folder = "plate1")
+```
+
+1.  Melt curve plots
+2.  Melt curve splits by category
+3.  Amplification curves
+4.  Colour platelayout
+5.  Map of species primers
+6.  Nested list of raw data
+    1.  Consolidated results
+    2.  All meltcurve data
+    3.  All amplification curve data
+
 # File specifications
 
-Within every results folder (specified with the `plate_folder` variable
-in the above functions) you will need two files. First is the Quanstudio
-results file that is exported from the `.eds` output of the machine.
-This will have a series of sheets automatically generated including
-‘Results’, ‘Melt Curve Raw Data’ and ‘Amplification Data’. You do not
-need to modify this file in any way after exporting it from the
-QuantStudio software.
+Within every results folder (specified with the `plate_folder`) you will
+need two files.
+
+First is the Quanstudio results file that is exported from the .eds
+output of the machine. This will have a series of sheets automatically
+generated including ‘Results’, ‘Melt Curve Raw Data’ and ‘Amplification
+Data’. You do not need to modify this file in any way after exporting it
+from the QuantStudio software.
 
 Second, you will need to have a platemap file to designate the sample
 layout in the 96 well plate format. This requires the sheet of the
-platemap to be called `map` and if it is a species-specific PCR (nested
-or direct) you will also need a second sheet named `species_map`
-specifying which primers are in which wells (use Pf, Pv, Pm or Po).
+platemap to be called **map** and if it is a species-specific PCR
+(nested or direct) you will also need a second sheet named
+**species_map** specifying which primers are in which wells (use Pf, Pv,
+Pm or Po).
 
 **A screening platemap will look approximately like:**
 
@@ -221,6 +234,10 @@ Quanstudio export does not have any naming requirements except to be the
 only other xls or xlsx file accompanying the map-named file in the
 folder. It is fine to store the original QuantStudio raw data (.eds)
 file in this same folder.
+
+A sporadic error appears to occur is the **folder name** of your data is
+too long. Try reducing the length of the name you give for each plate
+folder if you come accross this.
 
 ## Merge all results into one database
 
@@ -246,73 +263,84 @@ createPCRdatabase(sub_directory = "sub_directory",
 
 ## Follow along with an example:
 
-Within the ‘example-data’ folder there are example raw data and example
-QC reports too.
-
-You can test the above functions with this test data downloading the
-‘example-data’ folder. `example-data` will be the sub_directory,
-`project_name` will be the project and `nested_species` will be the
-species_type. This should reproduce the results found in the `results`
+Example data and results are provided within the `example_subdirectory`
 folder.
 
-Before starting **you always need to be working with an Rproj, so don’t
-forget to create a new .Rproj file and then move this example data
-relative to the Rproj**
+The following code can be used to regenerate the results in this folder.
+
+Before starting **please start, or work within an Rproj and have the
+`example_subdirectory` or renamed folder in the same location as your
+.Rproj file**
 
 ``` r
 library(plasmo.cytB.qPCR)
 ```
 
-1.  startNewProject(), using ‘example-data’ as the sub_directory and
-    `project-name` as project.
+1.  `startNewProject()`, using ‘example_subdirectory’ as the
+    sub_directory and `project-name` as project. If you are coping
+    across `example_subdirectory` and all its contents, you can proceed
+    to the next step. Otherwise, you can rename your sub_directory and
+    project and put the raw data in the corresponding folders generated
+    at this step.
 
 ``` r
-startNewProject(sub_directory = "example-data", project = "project-name", species_type = "nested_species")
+startNewProject(sub_directory = "example_subdirectory", 
+                project = "project_name", 
+                species_type = "nested_species")
 ```
 
-2.  Generate screeningReport()
+2.  Generate `screeningReport()`
 
 -   to generate pdf report
 
 ``` r
-screeningReport(sub_directory = "example-data", 
-                project = "project-name", 
+screeningReport(sub_directory = "example_subdirectory", 
+                project = "project_name", 
                 assay = "screening",
                 plate_folder = "example-screening-plate1",
                 file_type = ".pdf")
+#> processing file: screening_report.Rmd
+#> output file: screening_report.knit.md
+#> /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/pandoc +RTS -K512m -RTS screening_report.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/bourke.c/Documents/2025/plasmo.cytB.qPCR/example_subdirectory/project_name/results/screening/report/2025-07-14_screening_classification_project_name-example-screening-plate1.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.2/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.2/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/lb/_ccs_tw15mv9pjsy4qm4538m00039d/T//RtmpvTwIhY/rmarkdown-strc9e8d026692.html --variable 'geometry:margin=1in'
+#> 
+#> Output created: example_subdirectory/project_name/results/screening/report/2025-07-14_screening_classification_project_name-example-screening-plate1.pdf
+#> [1] "check the results/screening folder to find the results !"
 ```
 
 -   to generate html report (sometimes pdf will bug depending on
     computer, and html will usually work)
 
 ``` r
-screeningReport(sub_directory = "example-data", 
-                project = "project-name", 
+screeningReport(sub_directory = "example_subdirectory", 
+                project = "project_name", 
                 assay = "screening",
                 plate_folder = "example-screening-plate1",
                 file_type = ".html")
 ```
 
-By default `assay = "screening"` and does not need to be explicitly
-specified when calling screeningReport.
-
-3.  Generate nestedSpeciesReport()
+3.  Generate `nestedSpeciesReport()`
 
 -   to generate pdf output
 
 ``` r
-nestedSpeciesReport(sub_directory = "example-data", 
-                project = "project-name", 
+nestedSpeciesReport(sub_directory = "example_subdirectory", 
+                project = "project_name", 
                 assay = "nested_species",
                 plate_folder = "example-nestedspecies-plate1",
                 file_type = ".pdf")
+#> processing file: nested_species_report.Rmd
+#> output file: nested_species_report.knit.md
+#> /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/pandoc +RTS -K512m -RTS nested_species_report.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/bourke.c/Documents/2025/plasmo.cytB.qPCR/example_subdirectory/project_name/results/nested_species/report/2025-07-14_nestedspecies_classification_project_name-example-nestedspecies-plate1.tex --lua-filter /Library/Frameworks/R.framework/Versions/4.2/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.2/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /var/folders/lb/_ccs_tw15mv9pjsy4qm4538m00039d/T//RtmpvTwIhY/rmarkdown-strc9e869e3e66e.html --variable 'geometry:margin=1in'
+#> 
+#> Output created: example_subdirectory/project_name/results/nested_species/report/2025-07-14_nestedspecies_classification_project_name-example-nestedspecies-plate1.pdf
+#> [1] "check the results/nested_species folder to find the results !"
 ```
 
 -   to generate html output
 
 ``` r
-nestedSpeciesReport(sub_directory = "example-data", 
-                project = "project-name", 
+nestedSpeciesReport(sub_directory = "example_subdirectory", 
+                project = "project_name",  
                 assay = "nested_species",
                 plate_folder = "example-nestedspecies-plate1",
                 file_type = ".html")
@@ -321,7 +349,11 @@ nestedSpeciesReport(sub_directory = "example-data",
 4.  Summarise all results from project in validated plates
 
 ``` r
-createPCRdatabase(sub_directory = "example-data",
-                  project = "project-name",
+createPCRdatabase(sub_directory = "example_subdirectory", 
+                project = "project_name", 
                   species_type = "nested_species")
 ```
+
+This excel file is now in
+`example_subdirectory/project_name/results/merged_database` saved with
+the date generated.
