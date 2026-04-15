@@ -7,7 +7,7 @@
 #' @return an excel spreadsheet stored in the merged_database folder
 #' @export createDatabase_species
 #'
-#' @examples \dontrun{createPCRdatabase(sub_directory = "lab-molecular", project = "test_project", species_type = "nested_species")}
+#' @examples \dontrun{createDatabase_species(sub_directory = "lab-molecular", project = "test_project", species_type = "nested_species")}
 
 createDatabase_species <- function(sub_directory, project, species_type) {
   
