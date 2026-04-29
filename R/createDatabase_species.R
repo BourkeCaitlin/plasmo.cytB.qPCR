@@ -1,0 +1,158 @@
+#' Create one database of all the results generated so far and stored in the respective results folders
+#'
+#' @param sub_directory name of sub_directory folder relative to RProj
+#' @param project project name
+#' @param species_type have the results been generated with nested or direct species
+#'
+#' @return an excel spreadsheet stored in the merged_database folder
+#' @export createDatabase_species
+#'
+#' @examples \dontrun{createDatabase_species(sub_directory = "lab-molecular", project = "test_project", species_type = "nested_species")}
+
+createDatabase_species <- function(sub_directory, project, species_type) {
+  
+  ctrl_names <- c("control", "ext control", "EXT", "CTR", "ctr extrc", "Insta SN", "ctr ext", "water", "H2o", "H2O", "H20", "Pf ctr", "Pf CTR", "PF Ctr", "PF CTR", "h2o")
+  
+  #import species results - can be nested or direct - list all files
+  species <- list.files(here::here(paste0(sub_directory, "/", project, "/results/",species_type,"/spreadsheet")), full.names = T)
+  
+  # read in files
+  species_results <- purrr::map(species,readxl::read_excel)#read in all the files in the species results
+  
+  # remove the ctrl samples into a list
+  species_results <- purrr::map(species_results, function(x) x %>%
+                                  dplyr::filter(!x$sample_id%in%ctrl_names)) #removes the ctrl samples if present
+
+  #bind rows and make sure no control samples are lingering
+  species_results <- dplyr::bind_rows(species_results) %>%
+    dplyr::filter(!sample_id%in%ctrl_names)
+  
+  
+  merged <- dplyr::bind_rows(species_results) %>%
+    dplyr::mutate_if(is.numeric, as.character) %>%
+    tidyr::pivot_longer(-sample_id) %>%
+    tidyr::drop_na() %>%
+    tidyr::pivot_wider(names_from = "name", values_from = "value")
+
+  
+  ### write excel
+  
+  file_name <- paste0(Sys.Date(), "-", project, "-database-merged.xlsx")
+  
+  to_save <- merged %>%
+    dplyr::select(sample_id, dplyr::contains("classification"), dplyr::everything())
+  
+  ## create classification_summary
+  
+  nested_summary = to_save %>%
+    dplyr::select(sample_id, contains("class"), -contains("screen")) %>%
+    tidyr::pivot_longer(-sample_id) %>%
+    dplyr::mutate(name = stringr::str_sub(name, 16, 17)) %>%
+    dplyr::filter(value=="positive") %>%
+    dplyr::mutate(value = name) %>%
+    tidyr::pivot_wider(names_from = name, values_from = value) %>%
+    tidyr::unite(classification_summary, -1, sep = " & ") %>%
+    dplyr::mutate(classification_summary = stringr::str_replace(classification_summary, " & NA|NA & ", ""))
+  
+  
+  to_save <- to_save %>%
+    dplyr::left_join(nested_summary) %>%
+    dplyr::select(sample_id, classification_summary, contains("class"), everything()) %>%
+    dplyr::mutate(classification_summary = dplyr::case_when(
+      !is.na(classification_summary) ~ classification_summary,
+      is.na(classification_summary) ~ "no result"
+    )) %>%
+    dplyr::mutate(classification_summary = dplyr::case_when(
+      classification_summary=="no result" ~ "no result",
+      stringr::str_detect(classification_summary, "\\&") ~ paste0(classification_summary, " co-infection"),
+      !stringr::str_detect(classification_summary, "neg") &!stringr::str_detect(classification_summary, "pos") ~ paste0(classification_summary, " infection"),
+      T ~ classification_summary
+    ))
+  
+  style_rounded = openxlsx::createStyle(numFmt="0,00")
+  
+  results <- openxlsx::createWorkbook()
+  openxlsx::addWorksheet(results, "merged-database", gridLines = T)
+  openxlsx::writeData(results, "merged-database", to_save)
+  
+  format_spp_pos <- openxlsx::createStyle(bgFill = "#BC2728")
+  format_spp_neg <- openxlsx::createStyle(bgFill = "#BCD7FB")
+  style_rounded = openxlsx::createStyle(numFmt="0.00")
+  
+  format_spp_pv<- openxlsx::createStyle(bgFill = "#f0de56")
+  format_spp_copfpv<- openxlsx::createStyle(bgFill = "#FFA500")
+  format_spp_pf<- openxlsx::createStyle(bgFill = "#f05b43")
+  format_spp_screen<- openxlsx::createStyle(bgFill = "#c7a2b6")
+  
+  openxlsx::conditionalFormatting(results, "merged-database", 1:ncol(to_save),
+                                  rule = "positive",
+                                  style = format_spp_pos,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  
+  openxlsx::conditionalFormatting(results, "merged-database",
+                                  1:ncol(to_save),
+                                  rule = "negative",
+                                  style = format_spp_neg,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  
+  
+  openxlsx::conditionalFormatting(results, "merged-database",
+                                  1:ncol(to_save),
+                                  rule = "pv ",
+                                  style = format_spp_pv,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  openxlsx::conditionalFormatting(results, "merged-database",
+                                  1:ncol(to_save),
+                                  rule = "pf ",
+                                  style = format_spp_pf,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  openxlsx::conditionalFormatting(results, "merged-database",
+                                  1:ncol(to_save),
+                                  rule = "co-infection",
+                                  style = format_spp_copfpv,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  openxlsx::conditionalFormatting(results, "merged-database",
+                                  1:ncol(to_save),
+                                  rule = "need",
+                                  style = format_spp_screen,
+                                  type = "contains",
+                                  rows = 1:nrow(to_save)+1)
+  
+  openxlsx::writeDataTable(results, "merged-database", to_save, startRow = 1, startCol = 1, tableStyle = "TableStyleLight9")
+  
+  
+  suppressWarnings( width_vec <- apply(to_save, 2, function(x) max(nchar(as.character(x)) + 2, na.rm = TRUE)))
+  
+  dth_vec_header <- nchar(colnames(to_save))  + 2
+  
+  width_vec <- dplyr::bind_cols(text = width_vec, header = dth_vec_header) %>%
+    dplyr::mutate(col_no = paste0("col", 1:length((to_save)))) %>%
+    tidyr::pivot_longer(-col_no) %>%
+    dplyr::mutate(value = dplyr::case_when(
+      value==Inf ~0,
+      TRUE~value))  %>%
+    dplyr::group_by(col_no) %>%
+    dplyr::filter(value == max(value)) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(col_no, value) %>%
+    dplyr::distinct()
+  #
+  openxlsx::setColWidths(results, "merged-database", cols = 1:ncol(to_save), widths = width_vec$value)
+  
+  
+  dir.create(here::here(sub_directory, "/", project, "/results/merged_database"),showWarnings = F)
+  openxlsx::saveWorkbook(results,
+                         file = here::here(sub_directory, "/",
+                                           project,
+                                           "results/merged_database", file_name), overwrite = T )
+}
