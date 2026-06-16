@@ -73,17 +73,17 @@ classifyDirectSpecies <- function(sub_directory, project, assay = "direct_specie
 
   QuantStudioData[[1]] <- QuantStudioData[[1]] %>%
     dplyr::mutate(classification = dplyr::case_when(
-      ct<=35 & tm1 > temperature_range_pf[1] & tm1 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 2000 ~"Pf positive",
-      ct<=35 & tm2 > temperature_range_pf[1] & tm2 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 2000 ~"Pf positive",
+      ct<=35 & tm1 > temperature_range_pf[1] & tm1 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 30000 ~"Pf positive",
+      ct<=35 & tm2 > temperature_range_pf[1] & tm2 < temperature_range_pf[2] & direct_species=="Pf" & derivative_max > 30000 ~"Pf positive",
 
-      ct<=35 & tm1 > temperature_range_pv[1] & tm1 < temperature_range_pv[2] & direct_species=="Pv" & derivative_max >2000 ~"Pv positive",
-      ct<=35 & tm2 > temperature_range_pv[1] & tm2 < temperature_range_pv[2] & direct_species=="Pv" & derivative_max >2000 ~"Pv positive",
+      ct<=35 & tm1 > temperature_range_pv[1] & tm1 < temperature_range_pv[2] & direct_species=="Pv" & derivative_max >30000 ~"Pv positive",
+      ct<=35 & tm2 > temperature_range_pv[1] & tm2 < temperature_range_pv[2] & direct_species=="Pv" & derivative_max >30000 ~"Pv positive",
 
-      ct<=35 & tm1 > temperature_range_pm[1] & tm1 < temperature_range_pm[2] & direct_species=="Pm" & derivative_max > 2000 ~"Pm positive",
-      ct<=35 & tm2 > temperature_range_pm[1] & tm2 < temperature_range_pm[2] & direct_species=="Pm" & derivative_max > 2000 ~"Pm positive",
+      ct<=35 & tm1 > temperature_range_pm[1] & tm1 < temperature_range_pm[2] & direct_species=="Pm" & derivative_max > 30000 ~"Pm positive",
+      ct<=35 & tm2 > temperature_range_pm[1] & tm2 < temperature_range_pm[2] & direct_species=="Pm" & derivative_max > 30000 ~"Pm positive",
 
-      ct<=35 &  tm1 > temperature_range_po[1] & tm1 < temperature_range_po[2] & direct_species=="Po" & derivative_max > 2000 ~"Po positive",
-      ct<=35 &  tm2 > temperature_range_po[1] & tm2 < temperature_range_po[2] & direct_species=="Po" & derivative_max > 2000 ~"Po positive",
+      ct<=35 &  tm1 > temperature_range_po[1] & tm1 < temperature_range_po[2] & direct_species=="Po" & derivative_max > 30000 ~"Po positive",
+      ct<=35 &  tm2 > temperature_range_po[1] & tm2 < temperature_range_po[2] & direct_species=="Po" & derivative_max > 30000 ~"Po positive",
 
       #############################
       TRUE ~"negative")) %>%
